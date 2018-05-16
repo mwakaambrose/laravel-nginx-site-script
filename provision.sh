@@ -3,15 +3,19 @@
 domain=$1
 root="/var/www/$domain/public"
 block="/etc/nginx/sites-available/$domain"
+uri="uri"
+query_string="query_string"
+
 
 # Create the Document Root directory
 sudo mkdir -p $root
 
 # Assign ownership to your regular user account
-sudo chown -R nginx:nginx $root
+sudo chown -R www-data:www-data $root
 
 # Create the Nginx server block file:
 sudo tee $block > /dev/null <<EOF
+
 server {
         listen 80;
         listen [::]:80;
@@ -26,7 +30,7 @@ server {
         location / {
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
-                try_files $uri $uri/ /index.php?$query_string
+                try_files \$$uri \$$uri / /index.php?\$$query_string;
         }
 
         # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
