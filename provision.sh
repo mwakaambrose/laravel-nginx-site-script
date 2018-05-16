@@ -15,7 +15,7 @@ etc_hosts=/etc/hosts
 # sudo mkdir -p $root
 
 # Assign ownership to your regular user account
-sudo chown -R www-data:www-data ${www_folder}${root}
+sudo chown -R www-data:www-data "$www_folder$domain"
 
 # Create the Nginx server block file:
 sudo tee $block > /dev/null <<EOF
@@ -67,7 +67,6 @@ EOF
         else
             echo "Adding $domain to your $etc_hosts";
             sudo -- sh -c -e "echo '$host_line' >> /etc/hosts";
-            # sudo -- sh -c -e "echo 'www.$host_line' >> /etc/hosts";
 
             if [ -n "$(grep $domain /etc/hosts)" ]
                 then
