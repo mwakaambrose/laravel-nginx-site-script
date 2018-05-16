@@ -1,7 +1,8 @@
 #!/bin/bash
 
 domain=$1
-root="/var/www/$domain/public"
+www_folder="/var/www/"
+root="$www_folder$domain/public"
 block="/etc/nginx/sites-available/$domain"
 uri="uri"
 query_string="query_string"
@@ -11,10 +12,10 @@ etc_hosts=/etc/hosts
 
 
 # Create the Document Root directory
-sudo mkdir -p $root
+# sudo mkdir -p $root
 
 # Assign ownership to your regular user account
-sudo chown -R www-data:www-data $root
+sudo chown -R www-data:www-data ${www_folder}${root}
 
 # Create the Nginx server block file:
 sudo tee $block > /dev/null <<EOF
@@ -66,7 +67,7 @@ EOF
         else
             echo "Adding $domain to your $etc_hosts";
             sudo -- sh -c -e "echo '$host_line' >> /etc/hosts";
-            sudo -- sh -c -e "echo 'www.$host_line' >> /etc/hosts";
+            # sudo -- sh -c -e "echo 'www.$host_line' >> /etc/hosts";
 
             if [ -n "$(grep $domain /etc/hosts)" ]
                 then
