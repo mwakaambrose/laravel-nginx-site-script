@@ -5,6 +5,9 @@ root="/var/www/$domain/public"
 block="/etc/nginx/sites-available/$domain"
 uri="uri"
 query_string="query_string"
+ip="127.0.0.1"
+host_line="$ip\t$domain"
+etc_hosts=/etc/hosts
 
 
 # Create the Document Root directory
@@ -25,7 +28,7 @@ server {
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html index.php;
 
-        server_name $domain www.$domain;
+        server_name $domain;
 
         location / {
                 # First attempt to serve request as file, then
@@ -54,6 +57,24 @@ server {
 
 
 EOF
+
+#Adding hostname entry to hosts file /etc/hosts
+
+    if [ -n "$(grep $domain /etc/hosts)" ]
+        then
+            echo "$domain already exists : $(grep $domain $etc_hosts)"
+        else
+            echo "Adding $domain to your $etc_hosts";
+            sudo -- sh -c -e "echo '$host_line' >> /etc/hosts";
+            sudo -- sh -c -e "echo 'www.$host_line' >> /etc/hosts";
+
+            if [ -n "$(grep $domain /etc/hosts)" ]
+                then
+                    echo "$domain was added succesfully";
+                else
+                    echo "Failed to Add $domain, Try again!";
+            fi
+    fi
 
 # Link to make it available
 sudo ln -s $block /etc/nginx/sites-enabled/
