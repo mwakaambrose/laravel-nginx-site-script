@@ -2,7 +2,7 @@
 
 domain=$1
 www_folder="/var/www/"
-root="$www_folder$domain/public"
+root="$www_folder$domain"
 block="/etc/nginx/sites-available/$domain"
 uri="uri"
 query_string="query_string"
@@ -13,7 +13,7 @@ etc_hosts=/etc/hosts
 
 # Create the Document Root directory
 # sudo mkdir -p $root
-
+sudo mkdir -p $root
 # Assign ownership to your regular user account
 sudo chown -R www-data:www-data "$www_folder$domain"
 
@@ -24,7 +24,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        root $root;
+        root $root/public;
 
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html index.php;
