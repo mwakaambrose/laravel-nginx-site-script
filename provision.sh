@@ -1,7 +1,7 @@
 #!/bin/bash
 
 domain=$1
-www_folder="/home/deploi/"
+www_folder="/home/deployer/"
 root="$www_folder$domain"
 block="/etc/nginx/sites-available/$domain"
 uri="uri"
@@ -15,7 +15,7 @@ etc_hosts=/etc/hosts
 # sudo mkdir -p $root
 sudo mkdir -p $root
 # Assign ownership to your regular user account
-sudo chown -R deploi:deploi "$www_folder$domain"
+sudo chown -R deployer:deployer "$www_folder$domain"
 
 # Create the Nginx server block file:
 sudo tee $block > /dev/null <<EOF
